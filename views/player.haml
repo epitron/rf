@@ -4,6 +4,7 @@
   %head
     %title= base(video)
     %meta{"http-equiv"=>"Content-Type", "content"=>"text/html; charset=UTF-8"}
+    %script{src: "js/crap.js", type: "text/javascript"}
 
     :css
       body { background-color: #000; }
@@ -12,35 +13,32 @@
 
 %body
 
-  %video#vid{autoplay: true, poster: 'play4.png', ondblclick: "toggle_fullscreen();"}
+  %video#vid{autoplay: true, autobuffer: true, poster: 'play4.png'}
     %source{:src => video}
 
 
 :javascript
-  vid = document.getElementById("vid");
-  vid.onclick = function() { this.play(); }
   // var fs_func = (vid.webkitEnterFullScreen || vid.mozRequestFullScreen);
 
-  function toggle_fullscreen() {
-    if (document.mozFullScreen || document.webkitIsFullScreen) {
-      if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-      } else {
-        console.log("no exit-fullscreen function found.");
-      }
-    } else {
-      /*
-      if (vid.webkitEnterFullScreen) {
-        vid.webkitEnterFullScreen();
-      */
-      if (vid.webkitRequestFullscreen) {
-        vid.webkitRequestFullscreen();
-      } else if(vid.mozRequestFullScreen) {
-        vid.mozRequestFullScreen();
-      } else {
-        console.log("no fullscreen function found.")
-      }
-    }
+  window.vid = document.getElementById("vid");
+  vid.ondblclick = toggle_fullscreen;
+
+  if (is_mobile()) {
+    console.log("Mobile detected!")
+    load_script("jquery-1.11.1.min.js", function() {
+      load_script("jquery.mobile-events.js", function () { 
+        vid.addEventListener('click', function(){ 
+          vid.play();
+          if (!is_fullscreen()) fullscreen();
+        }, false);
+
+
+        $( vid ).on( "swipeleft", function( event ) { 
+          console.log("swipe left!"); 
+          unfullscreen();
+          window.history.back();
+        });
+
+      });
+    });
   }
