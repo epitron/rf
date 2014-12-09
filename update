@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'haml'
+require 'binding_of_caller'
+
+def render(file, *args)
+  Haml::Engine.new( File.read(file) ).render( binding.of_caller(1) )
+end
+
+videos = Dir["*.mp4"].sort_by{|f| File.mtime(f) }.reverse
+
+def base(file); file.gsub(/\.[^\.]+$/, ''); end
+
+open("index.html", "wb") { |f| f.write render("views/index.haml") }
+
+for video in videos
+  # base = video.gsub(/\.[^\.]+$/, '')
+  outfile = "#{base(video)}.html"
+  p video => outfile
+  open(outfile, "w") { |f| f.write render("views/player.haml") }
+end

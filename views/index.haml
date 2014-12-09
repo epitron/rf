@@ -1,0 +1,26 @@
+!!!
+%head
+  %title -!-!-!-!-!-
+  :css
+    body {
+      background-color: black;
+      color: #888;
+    }
+    
+    a { text-decoration: none;   font-size: 22px; }
+    a:link { color: #00ff00; }
+    a:visited { color: #008800; }
+    a:hover { color: #FFFFFF; }
+    a:active { color: #FF00FF; }
+    
+    td { padding-right: 2em; }
+%center
+  %br/
+  %br/
+  %br/
+  %table
+    - for slice in videos.each_slice(3)
+      %tr
+        - for video in slice
+          %td
+            %a{:href => "#{base(video)}.html"}= base(video)
