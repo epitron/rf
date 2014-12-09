@@ -12,12 +12,13 @@
 
 %body
 
-  %video#vid{:autoplay => true, :ondblclick=>"toggle_fullscreen();"}
+  %video#vid{autoplay: true, poster: 'play4.png', ondblclick: "toggle_fullscreen();"}
     %source{:src => video}
 
 
 :javascript
   vid = document.getElementById("vid");
+  vid.onclick = function() { this.play(); }
   // var fs_func = (vid.webkitEnterFullScreen || vid.mozRequestFullScreen);
 
   function toggle_fullscreen() {
