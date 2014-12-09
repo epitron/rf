@@ -13,7 +13,7 @@
 
 %body
 
-  %video#vid{autoplay: true, autobuffer: true, poster: 'play4.png'}
+  %video#vid{autoplay: true, autobuffer: true}
     %source{:src => video}
 
 
@@ -25,6 +25,9 @@
 
   if (is_mobile()) {
     console.log("Mobile detected!")
+
+    vid.setAttribute('poster','play4.png');
+
     load_script("jquery-1.11.1.min.js", function() {
       load_script("jquery.mobile-events.js", function () { 
         vid.addEventListener('click', function(){ 
